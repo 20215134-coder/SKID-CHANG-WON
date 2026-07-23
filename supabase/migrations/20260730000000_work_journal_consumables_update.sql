@@ -77,7 +77,7 @@ begin
       )
       values (
         v_item_id,
-        case when v_delta > 0 then 'work_journal_consumption' else 'in' end,
+        (case when v_delta > 0 then 'work_journal_consumption' else 'in' end)::public.inventory_movement_type,
         abs(v_delta),
         v_inventory_item.current_quantity,
         v_new_stock,
