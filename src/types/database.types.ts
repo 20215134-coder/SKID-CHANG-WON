@@ -878,6 +878,13 @@ export interface Database {
         };
         Returns: void;
       };
+      update_work_journal_consumables: {
+        Args: {
+          p_journal_id: string;
+          p_items: { item_id: string; quantity: number }[];
+        };
+        Returns: void;
+      };
     };
     Enums: {
       user_role: UserRole;

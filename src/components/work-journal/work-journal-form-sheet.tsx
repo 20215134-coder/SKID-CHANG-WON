@@ -31,7 +31,7 @@ import type { InventoryItemOption } from "@/services/inventory-service";
 import type { Subsystem } from "@/services/subsystem-service";
 import type { MemberOption } from "@/services/team-service";
 import type { EngineeringCategory, Vehicle } from "@/services/vehicle-service";
-import type { WorkJournal, WorkJournalParticipant } from "@/services/work-journal-service";
+import type { WorkJournal, WorkJournalConsumable, WorkJournalParticipant } from "@/services/work-journal-service";
 import type { BomCategory } from "@/types/database.types";
 
 const initialState: WorkJournalActionState = {};
@@ -47,12 +47,14 @@ export function WorkJournalFormSheet({
   mode,
   journal,
   participants,
+  consumables: existingConsumables,
   open,
   onOpenChange,
 }: {
   mode: "create" | "edit";
   journal?: WorkJournal;
   participants?: WorkJournalParticipant[];
+  consumables?: WorkJournalConsumable[];
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
@@ -65,7 +67,9 @@ export function WorkJournalFormSheet({
   const [subsystemId, setSubsystemId] = useState(journal?.subsystemId ?? NONE_VALUE);
   const [assemblyId, setAssemblyId] = useState(journal?.assemblyId ?? NONE_VALUE);
   const [participantIds, setParticipantIds] = useState<string[]>(participants?.map((p) => p.memberId) ?? []);
-  const [consumables, setConsumables] = useState<ConsumableEntry[]>([]);
+  const [consumables, setConsumables] = useState<ConsumableEntry[]>(
+    existingConsumables?.map((c) => ({ itemId: c.inventoryItemId, quantity: c.quantityUsed })) ?? [],
+  );
 
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [categories, setCategories] = useState<EngineeringCategory[]>([]);
@@ -85,8 +89,8 @@ export function WorkJournalFormSheet({
     if (!open) return;
     fetchVehicleOptions().then(setVehicles);
     fetchActiveMembers().then(setMembers);
-    if (mode === "create") fetchConsumableItemOptions().then(setInventoryItems);
-  }, [open, mode]);
+    fetchConsumableItemOptions().then(setInventoryItems);
+  }, [open]);
 
   useEffect(() => {
     if (!vehicleId) return;
@@ -144,7 +148,7 @@ export function WorkJournalFormSheet({
           <input type="hidden" name="subsystemId" value={subsystemId === NONE_VALUE ? "" : subsystemId} />
           <input type="hidden" name="assemblyId" value={assemblyId === NONE_VALUE ? "" : assemblyId} />
           <input type="hidden" name="participantIds" value={JSON.stringify(participantIds)} />
-          {mode === "create" ? <input type="hidden" name="consumables" value={JSON.stringify(consumables)} /> : null}
+          <input type="hidden" name="consumables" value={JSON.stringify(consumables)} />
 
           <div className="flex flex-col gap-2">
             <Label htmlFor="title">제목</Label>
@@ -245,12 +249,15 @@ export function WorkJournalFormSheet({
             <ParticipantPicker members={members} selectedIds={participantIds} onChange={setParticipantIds} />
           </div>
 
-          {mode === "create" ? (
-            <div className="flex flex-col gap-2">
-              <Label>소모품 사용</Label>
-              <ConsumablePicker items={inventoryItems} entries={consumables} onChange={setConsumables} />
-            </div>
-          ) : null}
+          <div className="flex flex-col gap-2">
+            <Label>소모품 사용</Label>
+            <ConsumablePicker items={inventoryItems} entries={consumables} onChange={setConsumables} />
+            {mode === "edit" ? (
+              <p className="text-xs text-muted-foreground">
+                수량을 바꾸거나 항목을 삭제하면 그 차이만큼 재고가 즉시 반영됩니다(추가 차감 또는 반납).
+              </p>
+            ) : null}
+          </div>
 
           <div className="flex flex-col gap-2">
             <Label>내용</Label>

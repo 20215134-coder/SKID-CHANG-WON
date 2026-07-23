@@ -154,6 +154,7 @@ export async function updateWorkJournal(
     workStart: formData.get("workStart"),
     workEnd: formData.get("workEnd"),
     participantIds: formData.get("participantIds") || undefined,
+    consumables: formData.get("consumables") || undefined,
   });
 
   if (!parsed.success) {
@@ -188,6 +189,15 @@ export async function updateWorkJournal(
     return { error: "작업일지 수정 중 오류가 발생했습니다." };
   }
 
+  const { error: consumablesError } = await supabase.rpc("update_work_journal_consumables", {
+    p_journal_id: parsed.data.id,
+    p_items: parsed.data.consumables.map((item) => ({ item_id: item.itemId, quantity: item.quantity })),
+  });
+
+  if (consumablesError) {
+    return { error: consumablesError.message };
+  }
+
   await replaceParticipants(parsed.data.id, parsed.data.participantIds);
   await uploadJournalFiles(parsed.data.id, collectAttachments(formData), profile.id);
 
@@ -210,6 +220,17 @@ export async function deleteWorkJournal(id: string): Promise<{ error?: string }>
   const files = await listWorkJournalFiles(id);
 
   const supabase = await createClient();
+
+  // 작업일지를 지우기 전에 소모품 목록을 빈 배열로 "수정"해서, 이미 차감된 재고를 전량 반납한다
+  // (update_work_journal_consumables는 새 목록에 없는 기존 항목을 자동으로 환불 처리한다).
+  const { error: refundError } = await supabase.rpc("update_work_journal_consumables", {
+    p_journal_id: id,
+    p_items: [],
+  });
+  if (refundError) {
+    return { error: refundError.message };
+  }
+
   const { error } = await supabase.from("work_journals").delete().eq("id", id);
 
   if (error) {

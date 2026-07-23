@@ -70,6 +70,7 @@ export const updateWorkJournalFormSchema = z
     workStart: z.string().min(1, "작업 시작 시각을 입력해주세요."),
     workEnd: z.string().min(1, "작업 종료 시각을 입력해주세요."),
     participantIds: participantIdsSchema,
+    consumables: consumablesSchema,
   })
   .refine((data) => new Date(data.workEnd) >= new Date(data.workStart), {
     message: "작업 종료 시각은 시작 시각보다 늦어야 합니다.",

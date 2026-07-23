@@ -56,7 +56,7 @@ export default async function WorkJournalDetailPage({ params }: { params: Promis
           </p>
         </div>
         <div className="flex gap-2">
-          {canEdit ? <EditWorkJournalButton journal={journal} participants={participants} /> : null}
+          {canEdit ? <EditWorkJournalButton journal={journal} participants={participants} consumables={consumables} /> : null}
           {canDelete ? <DeleteWorkJournalButton id={journal.id} title={journal.title} redirectTo="/dashboard/work-journal" /> : null}
         </div>
       </div>

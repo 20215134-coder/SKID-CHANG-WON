@@ -5,9 +5,17 @@ import { Pencil } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { WorkJournalFormSheet } from "@/components/work-journal/work-journal-form-sheet";
-import type { WorkJournal, WorkJournalParticipant } from "@/services/work-journal-service";
+import type { WorkJournal, WorkJournalConsumable, WorkJournalParticipant } from "@/services/work-journal-service";
 
-export function EditWorkJournalButton({ journal, participants }: { journal: WorkJournal; participants: WorkJournalParticipant[] }) {
+export function EditWorkJournalButton({
+  journal,
+  participants,
+  consumables,
+}: {
+  journal: WorkJournal;
+  participants: WorkJournalParticipant[];
+  consumables: WorkJournalConsumable[];
+}) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -16,7 +24,14 @@ export function EditWorkJournalButton({ journal, participants }: { journal: Work
         <Pencil />
         수정
       </Button>
-      <WorkJournalFormSheet mode="edit" journal={journal} participants={participants} open={open} onOpenChange={setOpen} />
+      <WorkJournalFormSheet
+        mode="edit"
+        journal={journal}
+        participants={participants}
+        consumables={consumables}
+        open={open}
+        onOpenChange={setOpen}
+      />
     </>
   );
 }

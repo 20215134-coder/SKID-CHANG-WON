@@ -48,7 +48,7 @@ export function DeleteWorkJournalButton({ id, title, redirectTo }: { id: string;
           <AlertDialogHeader>
             <AlertDialogTitle>{title}을(를) 삭제할까요?</AlertDialogTitle>
             <AlertDialogDescription>
-              삭제된 작업일지와 첨부파일은 복구할 수 없습니다. 이미 차감된 소모품 재고는 자동으로 복구되지 않습니다.
+              삭제된 작업일지와 첨부파일은 복구할 수 없습니다. 차감됐던 소모품 재고는 자동으로 반납됩니다.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
