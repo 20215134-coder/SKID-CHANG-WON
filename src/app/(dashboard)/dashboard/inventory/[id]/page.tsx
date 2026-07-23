@@ -21,7 +21,7 @@ function formatCurrency(amount: number | null): string {
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   const item = await getInventoryItem(id);
-  return { title: `${item?.itemCode ?? "재고 항목"} | FSAE ERP` };
+  return { title: `${item?.itemCode ?? "재고 항목"} | SKID` };
 }
 
 export default async function InventoryItemDetailPage({ params }: { params: Promise<{ id: string }> }) {

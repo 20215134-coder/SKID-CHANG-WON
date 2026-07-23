@@ -8,7 +8,7 @@ import { MemberTable } from "@/components/team/member-table";
 import type { MemberStatus, UserRole } from "@/types/database.types";
 
 export const metadata: Metadata = {
-  title: "팀원 관리 | FSAE ERP",
+  title: "팀원 관리 | SKID",
 };
 
 const ROLE_VALUES: UserRole[] = ["admin", "leader", "member"];

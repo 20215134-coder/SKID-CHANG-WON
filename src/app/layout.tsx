@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "FSAE ERP",
+  title: "SKID",
   description: "Formula SAE 팀을 위한 ERP",
 };
 

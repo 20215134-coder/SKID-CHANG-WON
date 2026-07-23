@@ -4,7 +4,7 @@ import { MailCheck } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const metadata: Metadata = {
-  title: "이메일을 확인해주세요 | FSAE ERP",
+  title: "이메일을 확인해주세요 | SKID",
 };
 
 export default function CheckEmailPage() {

@@ -12,7 +12,7 @@ import { PaginationControls } from "@/components/ui/pagination-controls";
 import type { AssetCondition, BomCategory } from "@/types/database.types";
 
 export const metadata: Metadata = {
-  title: "Assets | FSAE ERP",
+  title: "Assets | SKID",
 };
 
 interface AssetsPageSearchParams {

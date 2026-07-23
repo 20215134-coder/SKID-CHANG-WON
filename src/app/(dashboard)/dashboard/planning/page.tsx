@@ -7,7 +7,7 @@ import { AnnualPlanTable } from "@/components/planning/annual-plan-table";
 import { CreateAnnualPlanButton } from "@/components/planning/create-annual-plan-button";
 
 export const metadata: Metadata = {
-  title: "연간 계획 | FSAE ERP",
+  title: "연간 계획 | SKID",
 };
 
 export default async function AnnualPlansPage() {

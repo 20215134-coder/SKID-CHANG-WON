@@ -16,7 +16,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ veh
   }
 
   const workbook = new ExcelJS.Workbook();
-  workbook.creator = "FSAE ERP";
+  workbook.creator = "SKID";
   workbook.created = new Date();
 
   // ── 종합 ──

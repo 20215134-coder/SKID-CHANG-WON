@@ -37,7 +37,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const metadata: Metadata = {
-  title: "대시보드 | FSAE ERP",
+  title: "대시보드 | SKID",
 };
 
 const MODULE_LINKS: { title: string; href: string; icon: LucideIcon }[] = [

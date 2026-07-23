@@ -12,7 +12,7 @@ import { VehicleBreadcrumb } from "@/components/vehicle/vehicle-breadcrumb";
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   const entry = await getDataEntry(id);
-  return { title: `${entry?.title ?? "Data"} | FSAE ERP` };
+  return { title: `${entry?.title ?? "Data"} | SKID` };
 }
 
 function formatDateTime(value: string): string {

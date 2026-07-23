@@ -11,7 +11,7 @@ import { VehicleBreadcrumb } from "@/components/vehicle/vehicle-breadcrumb";
 import type { PurchasePriority } from "@/types/database.types";
 
 export const metadata: Metadata = {
-  title: "승인 대기 | FSAE ERP",
+  title: "승인 대기 | SKID",
 };
 
 const SORT_FIELDS: PurchaseSortField[] = ["requested_at", "estimated_cost", "final_cost", "status"];

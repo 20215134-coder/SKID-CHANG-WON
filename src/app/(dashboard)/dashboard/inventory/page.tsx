@@ -13,7 +13,7 @@ import { PaginationControls } from "@/components/ui/pagination-controls";
 import type { InventoryCategory, InventoryItemStatus } from "@/types/database.types";
 
 export const metadata: Metadata = {
-  title: "재고 관리 | FSAE ERP",
+  title: "재고 관리 | SKID",
 };
 
 const SORT_FIELDS: InventorySortField[] = ["item_name", "current_quantity", "updated_at"];

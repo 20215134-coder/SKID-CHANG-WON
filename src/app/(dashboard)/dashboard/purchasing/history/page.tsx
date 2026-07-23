@@ -9,7 +9,7 @@ import { VehicleBreadcrumb } from "@/components/vehicle/vehicle-breadcrumb";
 import type { PurchasePriority, PurchaseStatus } from "@/types/database.types";
 
 export const metadata: Metadata = {
-  title: "구매 이력 | FSAE ERP",
+  title: "구매 이력 | SKID",
 };
 
 const SORT_FIELDS: PurchaseSortField[] = ["requested_at", "estimated_cost", "final_cost", "status"];

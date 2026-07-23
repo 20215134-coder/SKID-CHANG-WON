@@ -8,7 +8,7 @@ import { CreateAnnouncementButton } from "@/components/announcements/create-anno
 import { VehicleBreadcrumb } from "@/components/vehicle/vehicle-breadcrumb";
 
 export const metadata: Metadata = {
-  title: "공지 | FSAE ERP",
+  title: "공지 | SKID",
 };
 
 export default async function AnnouncementsPage() {

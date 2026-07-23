@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const metadata: Metadata = {
-  title: "계정 상태 | FSAE ERP",
+  title: "계정 상태 | SKID",
 };
 
 export default async function AccountStatusPage() {

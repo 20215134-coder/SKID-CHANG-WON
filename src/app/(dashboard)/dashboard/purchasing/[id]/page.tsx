@@ -29,7 +29,7 @@ import { VehicleBreadcrumb } from "@/components/vehicle/vehicle-breadcrumb";
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   const request = await getPurchaseRequest(id);
-  return { title: `${request?.requestNumber ?? "구매 요청"} | FSAE ERP` };
+  return { title: `${request?.requestNumber ?? "구매 요청"} | SKID` };
 }
 
 export default async function PurchaseRequestDetailPage({ params }: { params: Promise<{ id: string }> }) {

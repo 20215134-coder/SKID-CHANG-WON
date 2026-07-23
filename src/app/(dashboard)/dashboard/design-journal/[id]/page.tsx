@@ -15,7 +15,7 @@ import { VehicleBreadcrumb } from "@/components/vehicle/vehicle-breadcrumb";
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   const journal = await getDesignJournal(id);
-  return { title: `${journal?.title ?? "Design Journal"} | FSAE ERP` };
+  return { title: `${journal?.title ?? "Design Journal"} | SKID` };
 }
 
 function formatDateTime(value: string): string {

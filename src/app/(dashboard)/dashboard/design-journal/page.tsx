@@ -9,7 +9,7 @@ import { JournalFilters } from "@/components/journal/journal-filters";
 import type { BomCategory } from "@/types/database.types";
 
 export const metadata: Metadata = {
-  title: "Design Journal | FSAE ERP",
+  title: "Design Journal | SKID",
 };
 
 export default async function DesignJournalPage({

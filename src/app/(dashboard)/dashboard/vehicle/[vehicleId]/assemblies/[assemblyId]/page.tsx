@@ -48,7 +48,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { assemblyId } = await params;
   const assembly = await getAssembly(assemblyId);
-  return { title: `${assembly?.name ?? "Assembly"} | FSAE ERP` };
+  return { title: `${assembly?.name ?? "Assembly"} | SKID` };
 }
 
 export default async function AssemblyPage({

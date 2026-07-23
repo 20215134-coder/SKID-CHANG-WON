@@ -15,7 +15,7 @@ function canManageBudget(profile: { role: string; bomCategory: string | null }, 
 }
 
 export const metadata: Metadata = {
-  title: "예산 | FSAE ERP",
+  title: "예산 | SKID",
 };
 
 export default async function PurchasingBudgetPage() {

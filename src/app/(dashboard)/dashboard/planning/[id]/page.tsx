@@ -15,7 +15,7 @@ import { VehicleBreadcrumb } from "@/components/vehicle/vehicle-breadcrumb";
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   const plan = await getAnnualPlan(id);
-  return { title: `${plan?.title ?? "연간 계획"} | FSAE ERP` };
+  return { title: `${plan?.title ?? "연간 계획"} | SKID` };
 }
 
 export default async function AnnualPlanDetailPage({ params }: { params: Promise<{ id: string }> }) {

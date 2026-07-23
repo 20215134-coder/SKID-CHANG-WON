@@ -18,7 +18,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { subsystemId } = await params;
   const subsystem = await getSubsystem(subsystemId);
-  return { title: `${subsystem?.name ?? "Subsystem"} | FSAE ERP` };
+  return { title: `${subsystem?.name ?? "Subsystem"} | SKID` };
 }
 
 export default async function SubsystemPage({

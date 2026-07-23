@@ -7,7 +7,7 @@ import { FastenerCatalogTable } from "@/components/fasteners/fastener-catalog-ta
 import { VehicleBreadcrumb } from "@/components/vehicle/vehicle-breadcrumb";
 
 export const metadata: Metadata = {
-  title: "체결류 관리 | FSAE ERP",
+  title: "체결류 관리 | SKID",
 };
 
 export default async function FastenersPage() {

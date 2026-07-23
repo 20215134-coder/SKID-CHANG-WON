@@ -7,7 +7,7 @@ import { PaginationControls } from "@/components/ui/pagination-controls";
 import { VehicleBreadcrumb } from "@/components/vehicle/vehicle-breadcrumb";
 
 export const metadata: Metadata = {
-  title: "이동 이력 | FSAE ERP",
+  title: "이동 이력 | SKID",
 };
 
 interface HistoryPageSearchParams {

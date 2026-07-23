@@ -25,7 +25,7 @@ const FUTURE_TABS = ["Inventory", "Purchasing", "Manufacturing", "Testing", "Doc
 export async function generateMetadata({ params }: { params: Promise<{ partId: string }> }): Promise<Metadata> {
   const { partId } = await params;
   const part = await getPart(partId);
-  return { title: `${part?.partNumber ?? "Part"} | FSAE ERP` };
+  return { title: `${part?.partNumber ?? "Part"} | SKID` };
 }
 
 export default async function PartDetailPage({

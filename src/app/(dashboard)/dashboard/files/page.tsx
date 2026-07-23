@@ -13,7 +13,7 @@ import { VehicleStatusBadge } from "@/components/vehicle/vehicle-status-badge";
 import type { DocumentCategory } from "@/types/database.types";
 
 export const metadata: Metadata = {
-  title: "Files | FSAE ERP",
+  title: "Files | SKID",
 };
 
 export default async function FilesPage({ searchParams }: { searchParams: Promise<{ category?: string }> }) {

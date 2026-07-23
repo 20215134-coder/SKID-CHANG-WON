@@ -18,7 +18,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { categoryId } = await params;
   const category = await getCategory(categoryId);
-  return { title: `${category ? BOM_CATEGORY_LABELS[category.name] : "Category"} | FSAE ERP` };
+  return { title: `${category ? BOM_CATEGORY_LABELS[category.name] : "Category"} | SKID` };
 }
 
 export default async function CategoryPage({

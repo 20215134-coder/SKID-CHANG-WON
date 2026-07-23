@@ -87,7 +87,7 @@ export function AppSidebar({ profile }: { profile: AuthProfile }) {
       <SidebarHeader>
         <div className="flex items-center gap-2 px-2 py-1.5">
           <Wrench className="size-5 text-primary" />
-          <span className="text-sm font-semibold group-data-[collapsible=icon]:hidden">FSAE ERP</span>
+          <span className="text-sm font-semibold group-data-[collapsible=icon]:hidden">SKID</span>
         </div>
       </SidebarHeader>
       <SidebarContent>

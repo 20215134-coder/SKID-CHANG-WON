@@ -17,7 +17,7 @@ import { PurchaseRequestTable } from "@/components/purchasing/purchase-request-t
 import type { PurchasePriority, PurchaseStatus } from "@/types/database.types";
 
 export const metadata: Metadata = {
-  title: "구매 요청 | FSAE ERP",
+  title: "구매 요청 | SKID",
 };
 
 const SORT_FIELDS: PurchaseSortField[] = ["requested_at", "estimated_cost", "final_cost", "status"];

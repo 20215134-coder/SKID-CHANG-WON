@@ -10,7 +10,7 @@ import { VehicleTree } from "@/components/vehicle/vehicle-tree";
 export async function generateMetadata({ params }: { params: Promise<{ vehicleId: string }> }): Promise<Metadata> {
   const { vehicleId } = await params;
   const vehicle = await getVehicle(vehicleId);
-  return { title: `${vehicle?.vehicleName ?? "Vehicle"} Files | FSAE ERP` };
+  return { title: `${vehicle?.vehicleName ?? "Vehicle"} Files | SKID` };
 }
 
 export default async function VehicleFilesPage({ params }: { params: Promise<{ vehicleId: string }> }) {

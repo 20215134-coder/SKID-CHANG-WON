@@ -20,7 +20,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { vehicleId } = await params;
   const vehicle = await getVehicle(vehicleId);
-  return { title: `${vehicle?.vehicleName ?? "Vehicle"} | FSAE ERP` };
+  return { title: `${vehicle?.vehicleName ?? "Vehicle"} | SKID` };
 }
 
 export default async function VehicleDetailPage({ params }: { params: Promise<{ vehicleId: string }> }) {

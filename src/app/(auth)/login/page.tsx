@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { LoginForm } from "@/components/auth/login-form";
 
 export const metadata: Metadata = {
-  title: "로그인 | FSAE ERP",
+  title: "로그인 | SKID",
 };
 
 export default async function LoginPage({

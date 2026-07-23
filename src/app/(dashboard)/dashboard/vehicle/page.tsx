@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const metadata: Metadata = {
-  title: "Vehicle | FSAE ERP",
+  title: "Vehicle | SKID",
 };
 
 export default async function VehicleListPage() {

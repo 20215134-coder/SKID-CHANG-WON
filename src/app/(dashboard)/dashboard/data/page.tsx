@@ -8,7 +8,7 @@ import { DataCategoryFilter } from "@/components/data-entries/data-category-filt
 import { DataEntryCard } from "@/components/data-entries/data-entry-card";
 
 export const metadata: Metadata = {
-  title: "Data | FSAE ERP",
+  title: "Data | SKID",
 };
 
 interface DataPageSearchParams {
