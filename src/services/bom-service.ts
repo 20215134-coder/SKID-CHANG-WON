@@ -346,14 +346,16 @@ async function sumMaterialCost(
   supabase: Awaited<ReturnType<typeof createClient>>,
   rows: MaterialSourceRow[],
 ): Promise<{ total: number; costByAssemblyId: Map<string, number> }> {
-  const inventoryItems = await attachInventoryItems(
-    supabase,
-    rows.map((row) => row.inventory_item_id).filter((id): id is string => Boolean(id)),
-  );
-  const assets = await attachAssets(
-    supabase,
-    rows.map((row) => row.asset_id).filter((id): id is string => Boolean(id)),
-  );
+  const [inventoryItems, assets] = await Promise.all([
+    attachInventoryItems(
+      supabase,
+      rows.map((row) => row.inventory_item_id).filter((id): id is string => Boolean(id)),
+    ),
+    attachAssets(
+      supabase,
+      rows.map((row) => row.asset_id).filter((id): id is string => Boolean(id)),
+    ),
+  ]);
 
   let total = 0;
   const costByAssemblyId = new Map<string, number>();
@@ -391,25 +393,30 @@ export async function getAssemblyMaterialCost(assemblyId: string): Promise<numbe
   return total;
 }
 
+type VehicleCostTreeRow = {
+  id: string;
+  name: BomCategory;
+  subsystems: {
+    id: string;
+    assemblies: {
+      id: string;
+      bom_parts: { assembly_id: string; inventory_item_id: string | null; asset_id: string | null; material_quantity: number }[];
+    }[];
+  }[];
+};
+
 // 차량 전체(모든 카테고리/서브시스템/조립품/부품)를 훑어 예상 자재비를 카테고리별로 합산한다.
+// 카테고리→서브시스템→조립품→부품을 각각 순차 조회하면 왕복이 4번 쌓이므로,
+// PostgREST의 중첩 select(foreign key embed)로 한 번에 가져온다.
 export async function getVehicleMaterialCost(vehicleId: string): Promise<VehicleMaterialCost> {
   const supabase = await createClient();
 
-  const { data: categories } = await supabase.from("engineering_categories").select("id, name").eq("vehicle_id", vehicleId);
-  const categoryRows = categories ?? [];
-  const categoryIds = categoryRows.map((row) => row.id);
+  const { data } = await supabase
+    .from("engineering_categories")
+    .select("id, name, subsystems(id, assemblies(id, bom_parts(assembly_id, inventory_item_id, asset_id, material_quantity)))")
+    .eq("vehicle_id", vehicleId);
 
-  const { data: subsystems } =
-    categoryIds.length > 0
-      ? await supabase.from("subsystems").select("id, category_id").in("category_id", categoryIds)
-      : { data: [] as { id: string; category_id: string }[] };
-  const subsystemIds = (subsystems ?? []).map((row) => row.id);
-
-  const { data: assemblies } =
-    subsystemIds.length > 0
-      ? await supabase.from("assemblies").select("id, subsystem_id").in("subsystem_id", subsystemIds)
-      : { data: [] as { id: string; subsystem_id: string }[] };
-  const assemblyIds = (assemblies ?? []).map((row) => row.id);
+  const categoryRows = (data ?? []) as unknown as VehicleCostTreeRow[];
 
   const emptyByCategory: MaterialCostByCategory[] = BOM_CATEGORIES.map((category) => ({
     category,
@@ -417,33 +424,32 @@ export async function getVehicleMaterialCost(vehicleId: string): Promise<Vehicle
     totalCost: 0,
   }));
 
-  if (assemblyIds.length === 0) {
-    return { totalCost: 0, byCategory: emptyByCategory };
+  const rows: MaterialSourceRow[] = [];
+  const categoryNameByAssemblyId = new Map<string, BomCategory>();
+
+  for (const category of categoryRows) {
+    for (const subsystem of category.subsystems) {
+      for (const assembly of subsystem.assemblies) {
+        categoryNameByAssemblyId.set(assembly.id, category.name);
+        for (const part of assembly.bom_parts) {
+          if (part.inventory_item_id || part.asset_id) {
+            rows.push(part);
+          }
+        }
+      }
+    }
   }
 
-  const { data: parts } = await supabase
-    .from("bom_parts")
-    .select("assembly_id, inventory_item_id, asset_id, material_quantity")
-    .in("assembly_id", assemblyIds)
-    .or("inventory_item_id.not.is.null,asset_id.not.is.null");
-
-  const rows = (parts ?? []) as MaterialSourceRow[];
   if (rows.length === 0) {
     return { totalCost: 0, byCategory: emptyByCategory };
   }
 
   const { total, costByAssemblyId } = await sumMaterialCost(supabase, rows);
 
-  const subsystemByAssemblyId = new Map((assemblies ?? []).map((row) => [row.id, row.subsystem_id]));
-  const categoryIdBySubsystemId = new Map((subsystems ?? []).map((row) => [row.id, row.category_id]));
-  const categoryNameByCategoryId = new Map(categoryRows.map((row) => [row.id, row.name]));
-
   const costByCategory = new Map<BomCategory, number>();
 
   for (const [assemblyId, cost] of costByAssemblyId) {
-    const subsystemId = subsystemByAssemblyId.get(assemblyId);
-    const categoryId = subsystemId ? categoryIdBySubsystemId.get(subsystemId) : undefined;
-    const categoryName = categoryId ? categoryNameByCategoryId.get(categoryId) : undefined;
+    const categoryName = categoryNameByAssemblyId.get(assemblyId);
     if (categoryName) {
       costByCategory.set(categoryName, (costByCategory.get(categoryName) ?? 0) + cost);
     }
