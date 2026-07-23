@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm add *)",
+      "Bash(npm run *)",
+      "Bash(disown)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" --max-time 20 http://localhost:3000/dashboard/design-journal)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" --max-time 20 http://localhost:3000/dashboard/work-journal)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" --max-time 20 http://localhost:3000/dashboard/purchasing/budget)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" --max-time 20 http://localhost:3000/dashboard/vehicle/fasteners)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" --max-time 20 http://localhost:3000/dashboard/data)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" --max-time 20 http://localhost:3000/dashboard/vehicle)",
+      "Bash(tail -n 150 /tmp/dev.log 2>/dev/null || echo \"no log at /tmp/dev.log\")",
+      "Read(//tmp/**)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" --max-time 10 https://meshdegzjekmenodixir.supabase.co/auth/v1/health)",
+      "Bash(xargs -I{} sh -c 'echo === {} ===; cat {}')",
+      "Bash(find /d -maxdepth 3 -iname \"*SKID*\")",
+      "Bash(find /d -maxdepth 4 -iname \"*비용보고서*\")",
+      "Bash(unzip -l \"/d/\\(2\\)SKID/비용보고서_39_SKID.xlsx\")",
+      "Read(//c/Users/hsw03/AppData/Local/Temp/claude/d--ERP/549e360a-ae83-4e98-8798-de1b87c63a0e/scratchpad/skid_xlsx/**)",
+      "Bash(node parse.js xl/worksheets/sheet2.xml)"
+    ]
+  }
+}
