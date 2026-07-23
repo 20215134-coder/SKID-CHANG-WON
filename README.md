@@ -1,4 +1,4 @@
-# FSAE ERP
+# SKID
 
 Formula SAE 팀을 위한 ERP. 현재 마일스톤은 프로젝트 기반 구축 + 로그인/권한 시스템입니다.
 
