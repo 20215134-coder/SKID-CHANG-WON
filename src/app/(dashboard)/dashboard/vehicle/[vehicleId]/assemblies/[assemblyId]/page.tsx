@@ -2,9 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { requireUser } from "@/lib/auth/require-user";
-import { getCategory, getVehicle } from "@/services/vehicle-service";
-import { getSubsystem } from "@/services/subsystem-service";
-import { getAssembly, getAssemblyStats } from "@/services/assembly-service";
+import { getVehicle } from "@/services/vehicle-service";
+import { getAssembly, getAssemblyStats, getAssemblyWithAncestors } from "@/services/assembly-service";
 import { listAssemblyFiles } from "@/services/assembly-file-service";
 import { listAssemblyFasteners, listFastenerOptions } from "@/services/fastener-service";
 import { listActiveMemberOptions } from "@/services/team-service";
@@ -63,13 +62,10 @@ export default async function AssemblyPage({
   const { vehicleId, assemblyId } = await params;
   const query = await searchParams;
 
-  const [vehicle, assembly] = await Promise.all([getVehicle(vehicleId), getAssembly(assemblyId)]);
-  if (!vehicle || !assembly) notFound();
-
-  const subsystem = await getSubsystem(assembly.subsystemId);
-  if (!subsystem) notFound();
-  const category = await getCategory(subsystem.categoryId);
-  if (!category || category.vehicleId !== vehicleId) notFound();
+  const [vehicle, ancestors] = await Promise.all([getVehicle(vehicleId), getAssemblyWithAncestors(assemblyId)]);
+  if (!vehicle || !ancestors) notFound();
+  const { assembly, subsystem, category } = ancestors;
+  if (category.vehicleId !== vehicleId) notFound();
 
   const status = STATUS_VALUES.includes(query.status as ManufacturingStatus)
     ? (query.status as ManufacturingStatus)

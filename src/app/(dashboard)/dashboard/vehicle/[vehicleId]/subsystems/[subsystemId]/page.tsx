@@ -29,13 +29,16 @@ export default async function SubsystemPage({
   const profile = await requireUser();
   const { vehicleId, subsystemId } = await params;
 
-  const [vehicle, subsystem] = await Promise.all([getVehicle(vehicleId), getSubsystem(subsystemId)]);
+  const [vehicle, subsystem, assemblies] = await Promise.all([
+    getVehicle(vehicleId),
+    getSubsystem(subsystemId),
+    listAssemblies(subsystemId),
+  ]);
   if (!vehicle || !subsystem) notFound();
 
   const category = await getCategory(subsystem.categoryId);
   if (!category || category.vehicleId !== vehicleId) notFound();
 
-  const assemblies = await listAssemblies(subsystemId);
   const stats = await Promise.all(assemblies.map((assembly) => getAssemblyStats(assembly.id)));
 
   const canManage = profile.role === "admin" || (profile.role === "leader" && profile.bomCategory === category.name);

@@ -29,10 +29,13 @@ export default async function CategoryPage({
   const profile = await requireUser();
   const { vehicleId, categoryId } = await params;
 
-  const [vehicle, category] = await Promise.all([getVehicle(vehicleId), getCategory(categoryId)]);
+  const [vehicle, category, subsystems] = await Promise.all([
+    getVehicle(vehicleId),
+    getCategory(categoryId),
+    listSubsystems(categoryId),
+  ]);
   if (!vehicle || !category || category.vehicleId !== vehicleId) notFound();
 
-  const subsystems = await listSubsystems(categoryId);
   const assemblyCounts = await Promise.all(
     subsystems.map(async (subsystem) => ({ id: subsystem.id, count: (await listAssemblies(subsystem.id)).length })),
   );
