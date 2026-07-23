@@ -20,9 +20,11 @@ import type { LucideIcon } from "lucide-react";
 
 import { ROLE_LABELS } from "@/lib/auth/roles";
 import { requireUser } from "@/lib/auth/require-user";
+import { canManageAnnouncements } from "@/lib/announcements/permissions";
 import { BOM_CATEGORY_LABELS } from "@/lib/bom/constants";
 import { MOVEMENT_TYPE_LABELS } from "@/lib/inventory/constants";
 import { formatCurrency } from "@/lib/purchasing/format";
+import { listAnnouncements } from "@/services/announcement-service";
 import { listVehicleTotalBudgets } from "@/services/budget-service";
 import { listDesignJournals } from "@/services/design-journal-service";
 import { getInventoryDashboardStats } from "@/services/inventory-dashboard-service";
@@ -30,6 +32,7 @@ import { listInventoryMovements } from "@/services/inventory-service";
 import { listThisMonthDeadlines } from "@/services/milestone-service";
 import { getTeamStats } from "@/services/profile-service";
 import { listWorkJournals } from "@/services/work-journal-service";
+import { CreateAnnouncementButton } from "@/components/announcements/create-announcement-button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -55,16 +58,27 @@ function formatDate(value: string): string {
 
 export default async function DashboardPage() {
   const profile = await requireUser();
-  const [stats, inventoryStats, thisMonthDeadlines, vehicleBudgets, recentDesignJournals, recentWorkJournals, recentConsumableUsage] =
-    await Promise.all([
-      getTeamStats(),
-      getInventoryDashboardStats(),
-      listThisMonthDeadlines(),
-      listVehicleTotalBudgets(),
-      listDesignJournals({ limit: 3 }),
-      listWorkJournals({ limit: 3 }),
-      listInventoryMovements({ movementType: "work_journal_consumption", pageSize: 3 }),
-    ]);
+  const [
+    stats,
+    inventoryStats,
+    thisMonthDeadlines,
+    vehicleBudgets,
+    recentDesignJournals,
+    recentWorkJournals,
+    recentConsumableUsage,
+    recentAnnouncements,
+  ] = await Promise.all([
+    getTeamStats(),
+    getInventoryDashboardStats(),
+    listThisMonthDeadlines(),
+    listVehicleTotalBudgets(),
+    listDesignJournals({ limit: 3 }),
+    listWorkJournals({ limit: 3 }),
+    listInventoryMovements({ movementType: "work_journal_consumption", pageSize: 3 }),
+    listAnnouncements(3),
+  ]);
+
+  const canManageAnnouncementsPermission = canManageAnnouncements(profile);
 
   return (
     <div className="flex flex-col gap-6">
@@ -80,12 +94,29 @@ export default async function DashboardPage() {
       <div className="grid gap-4 md:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Megaphone className="size-4" />
-              최근 공지
-            </CardTitle>
-            <CardDescription>등록된 공지가 없습니다.</CardDescription>
+            <div className="flex items-center justify-between gap-2">
+              <CardTitle className="flex items-center gap-2">
+                <Megaphone className="size-4" />
+                최근 공지
+              </CardTitle>
+              {canManageAnnouncementsPermission ? <CreateAnnouncementButton /> : null}
+            </div>
           </CardHeader>
+          <CardContent className="flex flex-col gap-2 text-sm">
+            {recentAnnouncements.length === 0 ? (
+              <p className="text-muted-foreground">등록된 공지가 없습니다.</p>
+            ) : (
+              recentAnnouncements.map((announcement) => (
+                <Link key={announcement.id} href="/dashboard/announcements" className="block truncate hover:underline">
+                  {announcement.title}
+                  <span className="ml-1 text-xs text-muted-foreground">· {formatDate(announcement.createdAt)}</span>
+                </Link>
+              ))
+            )}
+            <Link href="/dashboard/announcements" className="text-xs text-muted-foreground hover:underline">
+              전체보기
+            </Link>
+          </CardContent>
         </Card>
 
         <Card>

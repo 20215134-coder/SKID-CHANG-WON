@@ -797,6 +797,26 @@ export interface Database {
         Update: never;
         Relationships: [];
       };
+      announcements: {
+        Row: {
+          id: string;
+          title: string;
+          content: string;
+          created_by: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          title: string;
+          content: string;
+          created_by?: string | null;
+        };
+        Update: {
+          title?: string;
+          content?: string;
+        };
+        Relationships: [];
+      };
       data_entries: {
         Row: {
           id: string;
